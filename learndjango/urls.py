@@ -17,9 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 
-
+from learndjango.contactus import views 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'', TemplateView.as_view(template_name='homepage.html'))
-    
+    path(r'', TemplateView.as_view(template_name='homepage.html')),
+    path(r'about/', views.contactus),
+    path(r'admin/', admin.site.urls)
 ]
