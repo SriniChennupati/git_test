@@ -14,13 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path, include
 from django.views.generic import TemplateView
 
-from learndjango.contactus import views 
+
+from learndjango.contactus import views  
+from learndjango.urlpatterns import views as up
+ur_patterns = [
+    re_path(r'', up.urlpatterns),
+    re_path(r'^urlpatters/(\d+)/', up.urlpatterns)
+        ]
+#handler404 = 'learndjango.utils.views.page_not_found'
 urlpatterns = [
+    
     path('admin/', admin.site.urls),
-    path(r'', TemplateView.as_view(template_name='homepage.html')),
-    path(r'about/', views.contactus),
-    path(r'admin/', admin.site.urls)
+    path(r'', TemplateView.as_view(template_name='homepage.html'), name="homepage"),
+    path(r'about/', views.contactus, name='about'),
+    path(r'admin/', admin.site.urls),
+    path(r'urlpatterns', include(ur_patterns))
+    #path(r'urlpatterns/', up.urlpatterns),
+    #re_path(r'urlpatterns/(\d+)/', up.urlpatterns)
+    #path(r'urlpatterns/', include('learndjango.urlpatterns.urls'))
 ]

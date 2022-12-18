@@ -24,9 +24,9 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = 'django-insecure-(t-)ne*kgc#%dzznkp6nd++s21+$uv=f55_ne-9u^&6kzq*h#s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False #True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'learndjango.contactus',
+    'learndjango.urlpatterns'
 ]
 
 MIDDLEWARE = [
