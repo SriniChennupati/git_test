@@ -19,14 +19,16 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+ADMINS = ('Srinivas', 'chennupatipostbox@gmail.com')
+MANAGERS = ADMINS
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-(t-)ne*kgc#%dzznkp6nd++s21+$uv=f55_ne-9u^&6kzq*h#s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False #True
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['.learndjango1.com']
 
 
 # Application definition
@@ -39,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'learndjango.contactus',
-    'learndjango.urlpatterns'
+    'learndjango.urlpatterns',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -50,17 +53,26 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'learndjano.middleware.custom_middleware.middleware_urlpatterns'
 ]
 
 ROOT_URLCONF = 'learndjango.urls'
 
+class InvalidTemplateVaraible(str):
+    def __mod__(self,other):
+        from django.template.base import TemplateSyntaxError
+        raise TemplateSyntaxError("Invalid Variable: '%s' " % other)
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['%s/templates/' % (PROJECT_DIR),],
         'APP_DIRS': True,
         'OPTIONS': {
+            'string_if_invalid' : InvalidTemplateVaraible("%s"),
             'context_processors': [
+                'learndjango.urlpatterns.processors.url_values',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -118,9 +130,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = ('%s /learndjangostatic/' %(BASE_DIR))
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#message level 
+from django.contrib.messages import constants as message_constants
+MESSAGE_LEVEL = message_constants.DEBUG
+
